@@ -22,7 +22,8 @@ public class EmployeeServiceImpl implements EmployeeService {
                 employeeDto.getId(),
                 employeeDto.getFirstname(),
                 employeeDto.getLastname(),
-                employeeDto.getEmail()
+                employeeDto.getEmail(),
+                employeeDto.getDepartmentCode()
         );
 
         Employee savedEmployee = employeeRepository.save(employee);
@@ -31,7 +32,8 @@ public class EmployeeServiceImpl implements EmployeeService {
                 savedEmployee.getId(),
                 savedEmployee.getFirstname(),
                 savedEmployee.getLastname(),
-                savedEmployee.getEmail()
+                savedEmployee.getEmail(),
+                savedEmployee.getDepartmentCode()
 
         );
         return savedEmployeeDto;
@@ -44,7 +46,8 @@ public class EmployeeServiceImpl implements EmployeeService {
                 employee.getId(),
                 employee.getFirstname(),
                 employee.getLastname(),
-                employee.getEmail()
+                employee.getEmail(),
+                employee.getDepartmentCode()
 
         );
         return employeeDto                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ;
