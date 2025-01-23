@@ -5,6 +5,7 @@ import com.MyProject1.employee_service.dto.DepartmentDto;
 import com.MyProject1.employee_service.dto.EmployeeDto;
 import com.MyProject1.employee_service.entity.Employee;
 import com.MyProject1.employee_service.repository.EmployeeRepository;
+import com.MyProject1.employee_service.service.APIClient;
 import com.MyProject1.employee_service.service.EmployeeService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 //    @Autowired
 //    private RestTemplate restTemplate;
 
+//    @Autowired
+//    private WebClient webClient;
+
     @Autowired
-    private WebClient webClient;
+    private APIClient apiClient;
 
 
 
@@ -65,11 +69,18 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         ///  communicate with web client
 
-       DepartmentDto departmentDto=  webClient.get()
-                .uri("http://localhost:8081/api/departments/" +  employee.getDepartmentCode())
-                .retrieve()
-                .bodyToMono(DepartmentDto.class)
-                .block();
+//       DepartmentDto departmentDto=  webClient.get()
+//                .uri("http://localhost:8081/api/departments/" +  employee.getDepartmentCode())
+//                .retrieve()
+//                .bodyToMono(DepartmentDto.class)
+//                .block();
+
+        ///  communicate with spring cloud open feign
+
+        DepartmentDto departmentDto = apiClient.getDepartment(employee.getDepartmentCode());
+
+
+
 
 
         EmployeeDto employeeDto = new EmployeeDto(
