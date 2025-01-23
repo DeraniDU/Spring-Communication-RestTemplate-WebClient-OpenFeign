@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
 //@AllArgsConstructor
@@ -20,8 +21,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
     private EmployeeRepository employeeRepository;
+//    @Autowired
+//    private RestTemplate restTemplate;
+
     @Autowired
-    private RestTemplate restTemplate;
+    private WebClient webClient;
 
 
 
@@ -52,13 +56,21 @@ public class EmployeeServiceImpl implements EmployeeService {
     public ApiResponseDto getEmployeeById(Long id) {
         Employee employee = employeeRepository.findById(id).orElse(null);
 
-        ResponseEntity<DepartmentDto> responseEntity = restTemplate.getForEntity(
-                "http://localhost:8081/api/departments/" + employee.getDepartmentCode(),
-                DepartmentDto.class);
+        /// communication with rest template
 
+//        ResponseEntity<DepartmentDto> responseEntity = restTemplate.getForEntity(
+//               "http://localhost:8081/api/departments/" + employee.getDepartmentCode(),
+//                DepartmentDto.class);
+//                DepartmentDto departmentDto = responseEntity.getBody();
 
+        ///  communicate with web client
 
-        DepartmentDto departmentDto = responseEntity.getBody();
+       DepartmentDto departmentDto=  webClient.get()
+                .uri("http://localhost:8081/api/departments/" +  employee.getDepartmentCode())
+                .retrieve()
+                .bodyToMono(DepartmentDto.class)
+                .block();
+
 
         EmployeeDto employeeDto = new EmployeeDto(
                 employee.getId(),
